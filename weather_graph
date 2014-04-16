@@ -1,0 +1,12 @@
+#!/bin/bash
+rm /tmp/weather_*
+
+curl "http://forecast.weather.gov/meteograms/Plotter.php?lat=40.01499&lon=-105.27055&wfo=BOU&zcode=COZ039&gset=15&gdiff=3&unit=0&tinfo=MY7&ahour=0&pcmd=1111111111100000000001&lg=en&indu=1!1!1&dd=0&bw=0&hrspan=48&pqpfhr=6&psnwhr=6" > /tmp/weather_boulder.png
+
+curl "http://forecast.weather.gov/meteograms/Plotter.php?lat=40.16721&lon=-105.10193&wfo=BOU&zcode=COZ039&gset=15&gdiff=3&unit=0&tinfo=MY7&ahour=0&pcmd=1111111111100000000001&lg=en&indu=1!1!1&dd=0&bw=0&hrspan=48&pqpfhr=6&psnwhr=6" > /tmp/weather_longmont.png
+
+now=`date +"%s"`
+
+montage /tmp/weather_boulder.png /tmp/weather_longmont.png -title "Boulder and Longmont Weather `date`" -geometry 800x830 "/tmp/weather_both.$now.png"
+convert /tmp/weather_both.$now.png  -adaptive-resize 1920x1080\!  /tmp/weather_both.$now.png
+pcmanfm --set-wallpaper=/tmp/weather_both.$now.png  --wallpaper-mode=center
