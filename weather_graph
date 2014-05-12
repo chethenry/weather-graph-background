@@ -5,8 +5,27 @@ curl "http://forecast.weather.gov/meteograms/Plotter.php?lat=40.01499&lon=-105.2
 
 curl "http://forecast.weather.gov/meteograms/Plotter.php?lat=40.16721&lon=-105.10193&wfo=BOU&zcode=COZ039&gset=15&gdiff=3&unit=0&tinfo=MY7&ahour=0&pcmd=1111111111100000000001&lg=en&indu=1!1!1&dd=0&bw=0&hrspan=48&pqpfhr=6&psnwhr=6" > /tmp/weather_longmont.png
 
+curl "http://forecast.weather.gov/meteograms/Plotter.php?lat=40.01499&lon=-105.27055&wfo=BOU&zcode=COZ039&gset=15&gdiff=3&unit=0&tinfo=MY7&pcmd=1111111111100000000001&lg=en&indu=1!1!1&dd=0&bw=0&hrspan=48&pqpfhr=6&psnwhr=6&ahour=48" > /tmp/weather_boulder_48.png
+
+curl "http://forecast.weather.gov/meteograms/Plotter.php?lat=40.16721&lon=-105.10193&wfo=BOU&zcode=COZ039&gset=15&gdiff=3&unit=0&tinfo=MY7&pcmd=1111111111100000000001&lg=en&indu=1!1!1&dd=0&bw=0&hrspan=48&pqpfhr=6&psnwhr=6&ahour=48" > /tmp/weather_longmont_48.png
+
 now=`date +"%s"`
 
 montage /tmp/weather_boulder.png /tmp/weather_longmont.png -title "Boulder and Longmont Weather `date`" -geometry 800x830 "/tmp/weather_both.$now.png"
 convert /tmp/weather_both.$now.png  -adaptive-resize 1920x1080\!  /tmp/weather_both.$now.png
-pcmanfm --set-wallpaper=/tmp/weather_both.$now.png  --wallpaper-mode=center
+
+montage /tmp/weather_boulder_48.png /tmp/weather_longmont_48.png -title "Boulder and Longmont Weather `date --date '+48 hour' `" -geometry 800x830 "/tmp/weather_both_48.$now.png"
+convert /tmp/weather_both_48.$now.png  -adaptive-resize 1920x1080\!  /tmp/weather_both_48.$now.png
+
+echo "[xin_1]
+file=/tmp/weather_both_48.$now.png
+mode=0
+bgcolor=#000000
+
+[xin_0]
+file=/tmp/weather_both.$now.png
+mode=0
+bgcolor=#000000
+" > ~/.config/nitrogen/bg-saved.cfg
+
+nitrogen --restore 
